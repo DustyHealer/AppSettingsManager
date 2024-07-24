@@ -1,5 +1,6 @@
 using AppSettingsManager;
 using AppSettingsManager.Models;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,6 +42,13 @@ builder.Host.ConfigureAppConfiguration((hostingContext, builder) =>
     builder.AddJsonFile("custom.json", optional: false, reloadOnChange: true);
     builder.AddEnvironmentVariables();
     builder.AddCommandLine(args);
+
+    if (hostingContext.HostingEnvironment.IsDevelopment())
+    {
+        return;
+    }
+    // Azure Key Vault
+    builder.AddAzureKeyVault("https://myappsettingmanagervault.vault.azure.net/");
 });
 
 var app = builder.Build();
