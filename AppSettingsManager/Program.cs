@@ -27,7 +27,7 @@ builder.Services.AddConfiguration<TwilioSettings>(builder.Configuration, "Twilio
 
 // The below line will fail because AddConfiguration extension method can not handle multi level hierarchies
 //builder.Services.AddConfiguration<SocialLoginSettings>(builder.Configuration, "Twilio");
-
+var keyVaultName = builder.Configuration.GetValue<string>("KeyVaultName");
 // Change the default hierarchy to change precedence of secrets, appsettings, environment variables, command line variables etc
 builder.Host.ConfigureAppConfiguration((hostingContext, builder) =>
 {
@@ -48,7 +48,8 @@ builder.Host.ConfigureAppConfiguration((hostingContext, builder) =>
         return;
     }
     // Azure Key Vault
-    builder.AddAzureKeyVault("https://myappsettingmanagervault.vault.azure.net/");
+    
+    builder.AddAzureKeyVault($"https://{keyVaultName}.vault.azure.net/");
 });
 
 var app = builder.Build();
