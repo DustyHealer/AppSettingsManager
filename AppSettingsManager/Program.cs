@@ -38,6 +38,7 @@ builder.Host.ConfigureAppConfiguration((hostingContext, builder) =>
     {
         builder.AddUserSecrets<Program>();
     }
+    builder.AddJsonFile("custom.json", optional: false, reloadOnChange: true);
     builder.AddEnvironmentVariables();
     builder.AddCommandLine(args);
 });
